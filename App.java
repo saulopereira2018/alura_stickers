@@ -1,4 +1,6 @@
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -6,9 +8,15 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 public class App {
     // APP ALURA. ALUNO: SAULO PEREIRA DA SILVA
 
+    /**
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         // realizar conexão http e buscar os top 250 filmes
         String url = "https://alura-imdb-api.herokuapp.com/movies";
@@ -29,11 +37,19 @@ public class App {
         // System.out.println(listaDeFilmes.get(0));
 
         // exibir e manipular dados
+        var geradora = new GeradoraDeFigurinhas();
         for (Map<String, String> filme : listaDeFilmes) {
-            console.log("\u001b[37;1m \u001b[44;1m Alura \u001b[m");
-            System.out.println(filme.get("title"));
-            System.out.println(filme.get("image"));
-            System.out.println(filme.get("imDbRatting"));
+            // System.out.println(filme.get("image"));
+            // System.out.println(filme.get("imDbRatting"));
+            String urlImagem = filme.get("image");
+            String titulo = filme.get("title");
+
+            InputStream inputStream = new URL(urlImagem).openStream();
+            String nomeArquivo = titulo + ".png";
+
+            geradora.cria(inputStream, nomeArquivo);
+
+            System.out.println(titulo);
             System.out.println();
         }
 
